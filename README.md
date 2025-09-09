@@ -10,42 +10,42 @@
 3. Anton Wingeier
  
 ### Part 1: Prompt
-Grace Hutchinson
+Grace Hutchinson,
 Jordan Forthman
  
 ### Part 2: Environment Variables
-Grace Hutchinson
+Grace Hutchinson,
 Jordan Forthman
  
 ### Part 3: Tilde Expansion
-Grace Hutchinson
+Grace Hutchinson,
 Anton Wingeier
  
 ### Part 4: $PATH Search
-Jordan Forthman
+Jordan Forthman,
 Anton Wingeier
  
 ### Part 5: External Command Execution
-Jordan Forthman
+Jordan Forthman,
 Anton Wingeier
  
 ### Part 6: I/O Redirection
-Grace Hutchinson
+Grace Hutchinson,
 Anton Wingeier
  
 ### Part 7: Piping
-Jordan Forthman
+Jordan Forthman,
 Anton Wingeier
  
 ### Part 8: Background Processing
-Grace Hutchinson
+Grace Hutchinson,
 Anton Wingeier
  
 ### Part 9: Internal Command Execution
-Grace Hutchinson
+Grace Hutchinson,
 Jordan Forthman
  
 ### Extra Credit
-Grace Hutchinson
-Jordan Forthman
+Grace Hutchinson,
+Jordan Forthman,
 Anton Wingeier
