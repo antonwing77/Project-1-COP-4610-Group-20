@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include "shell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,22 +7,30 @@
 int main()
 {
 	while (1) {
-		printf("> ");
+		// Display custom prompt
+		print_shell_prompt();
 
 		/* input contains the whole command
 		 * tokens contains substrings from input split by spaces
 		 */
 
 		char *input = get_input();
-		printf("whole input: %s\n", input);
+		if (input == NULL || strlen(input) == 0) {
+			free(input);
+			continue; // Handle empty input
+		}
 
 		tokenlist *tokens = get_tokens(input);
-		for (int i = 0; i < tokens->size; i++) {
-			printf("token %d: (%s)\n", i, tokens->items[i]);
+		tokenlist *expanded_tokens = expand_env_variables(tokens);
+
+		// Print expanded tokens (for demonstration; replace with command execution later)
+		for (int i = 0; i < expanded_tokens->size; i++) {
+			printf("token %d: (%s)\n", i, expanded_tokens->items[i]);
 		}
 
 		free(input);
 		free_tokens(tokens);
+		free_tokens(expanded_tokens);
 	}
 
 	return 0;
