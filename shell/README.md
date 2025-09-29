@@ -5,7 +5,7 @@ A comprehensive shell interface that enhances process control, user interaction,
 ## Group Members
 - **Jordan Forthman**: jf24b@fsu.edu
 - **Anton Wingeier**: abw21e@fsu.edu
-- **Grace Hutchinson**:
+- **Grace Hutchinson**: gah24b@fsu.edu
 
 ## Division of Labor
 
