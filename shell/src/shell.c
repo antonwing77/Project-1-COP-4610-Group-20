@@ -3,14 +3,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "shell.h"
 #include <sys/wait.h>
+#include "shell.h"
 
 tokenlist *expand_tokens(tokenlist *tokens) {
+    // Create new list for expanded tokens
     tokenlist *expanded = new_tokenlist();
     char buffer[PATH_MAX + 1];
+    // Process each token
     for (int i = 0; i < tokens->size; i++) {
         char *tok = tokens->items[i];
+        // Expand env variables
         if (tok[0] == '$') {
             char *value = getenv(tok + 1);
             if (value != NULL) {
@@ -20,6 +23,7 @@ tokenlist *expand_tokens(tokenlist *tokens) {
                 buffer[0] = '\0';
             }
             add_token(expanded, buffer);
+        // Expand tilde
         } else if (tok[0] == '~' && (tok[1] == '\0' || tok[1] == '/')) {
             char *home = getenv("HOME");
             if (!home) home = getenv("USERPROFILE");
@@ -37,6 +41,7 @@ tokenlist *expand_tokens(tokenlist *tokens) {
     return expanded;
 }
 
+// Initialize history struct w base values
 void init_history(history *hist) {
     hist->count = 0;
     hist->index = 0;
@@ -44,9 +49,10 @@ void init_history(history *hist) {
 }
 
 void add_to_history(history *hist, const char *cmd) {
-    if (hist->commands[hist->index]) free(hist->commands[hist->index]);
-    hist->commands[hist->index] = strdup(cmd);
-    hist->index = (hist->index + 1) % 3;
+    if (strcmp(cmd, "exit") == 0) return;
+    if (hist->commands[hist->index]) free(hist->commands[hist->index]); // Free existing command
+    hist->commands[hist->index] = strdup(cmd); // Store new command
+    hist->index = (hist->index + 1) % 3; // update index & count
     if (hist->count < 3) hist->count++;
 }
 
@@ -56,6 +62,7 @@ void free_history(history *hist) {
 
 void add_job(job *jobs, int *job_count, pid_t pid, const char *cmd_line) {
     if (*job_count >= 10) return;
+    // Store job details
     jobs[*job_count].pid = pid;
     jobs[*job_count].job_num = *job_count + 1;
     jobs[*job_count].cmd_line = strdup(cmd_line);
@@ -66,17 +73,19 @@ void check_jobs(job *jobs, int *job_count) {
     int i = 0;
     while (i < *job_count) {
         int status;
+        // Check job status
         pid_t ret = waitpid(jobs[i].pid, &status, WNOHANG);
         if (ret > 0) {
+            // Report the completed job
             printf("[%d]+ done %s\n", jobs[i].job_num, jobs[i].cmd_line);
             free(jobs[i].cmd_line);
-            // Shift array
+            // Shift array to remove the job
             for (int j = i; j < *job_count - 1; j++) {
                 jobs[j] = jobs[j + 1];
             }
             (*job_count)--;
         } else if (ret < 0) {
-            // Error, remove
+            // Error handle & remove job
             free(jobs[i].cmd_line);
             for (int j = i; j < *job_count - 1; j++) {
                 jobs[j] = jobs[j + 1];
